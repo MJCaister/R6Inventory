@@ -1,7 +1,9 @@
 from app import db
 # form app.models import
 from app import app
+import sys
 
+print(sys.version)
 
 @app.shell_context_processor
 def make_shell_context():
