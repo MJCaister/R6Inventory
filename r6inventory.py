@@ -3,7 +3,8 @@ from app import db
 from app import app
 import sys
 
-print(sys.version)
+print("\nPython Ver: " + sys.version + "\n")
+
 
 @app.shell_context_processor
 def make_shell_context():
