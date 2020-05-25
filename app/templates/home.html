@@ -2,5 +2,8 @@
 
 {% block content %}
 <h3>Home Page</h3>
+{% for i in item %}
+<p>{{ i.name }}</p>
+{% endfor %}
 
 {% endblock %}
