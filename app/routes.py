@@ -57,3 +57,52 @@ def uniforms():
 def skins():
     items = Item.query.filter(Item.type.in_([7])).all()
     return render_template("list_items.html", page_title='Skins', items=items)
+
+
+@app.route('/weapon/<weapon>')
+def weapon(weapon):
+    weapon = weapon.replace("%20", " ")
+    item = Item.query.filter_by(name=weapon).first_or_404()
+    return render_template("item.html", page_title=weapon, item=item)
+
+
+@app.route('/operator/<operator>')
+def operator(operator):
+    operator = operator.replace("%20", " ")
+    item = Item.query.filter_by(name=operator).first_or_404()
+    return render_template("item.html", page_title=operator, item=item)
+
+
+@app.route('/organisation/<organisation>')
+def organisation(organisation):
+    organisation = organisation.replace("%20", " ")
+    item = Item.query.filter_by(name=organisation).first_or_404()
+    return render_template("item.html", page_title=organisation, item=item)
+
+
+@app.route('/charm/<charm>')
+def charm(charm):
+    charm = charm.replace("%20", " ")
+    item = Item.query.filter_by(name=charm).first_or_404()
+    return render_template("item.html", page_title=charm, item=item)
+
+
+@app.route('/headgear/<headgear>')
+def headgear(headgear):
+    headgear = headgear.replace("%20", " ")
+    item = Item.query.filter_by(name=headgear).first_or_404()
+    return render_template("item.html", page_title=headgear, item=item)
+
+
+@app.route('/uniform/<uniform>')
+def uniform(uniform):
+    uniform = uniform.replace("%20", " ")
+    item = Item.query.filter_by(name=uniform).first_or_404()
+    return render_template("item.html", page_title=uniform, item=item)
+
+
+@app.route('/skin/<skin>')
+def skin(skin):
+    skin = skin.replace("%20", " ")
+    item = Item.query.filter_by(name=skin).first_or_404()
+    return render_template("item.html", page_title=skin, item=item)
