@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, flash
 from app import app, db
-from models import Item
+from app.models import Item, ItemType
 # from app.forms import
 
 # charm = Item.query.filter(Item.type.in_([2])).all()
@@ -14,4 +14,46 @@ from models import Item
 
 @app.route('/')
 def home():
-    return render_template('home.html', page_title='Home', item=item)
+    return render_template('home.html', page_title='Home')
+
+
+@app.route('/weapons')
+def weapons():
+    items = Item.query.filter(Item.type.in_([8])).all()
+    return render_template("list_items.html", page_title='Weapons', items=items)
+
+
+@app.route('/operators')
+def operators():
+    items = Item.query.filter(Item.type.in_([5])).all()
+    return render_template("list_items.html", page_title='Operators', items=items)
+
+
+@app.route('/organisations')
+def organisations():
+    items = Item.query.filter(Item.type.in_([6])).all()
+    return render_template("list_items.html", page_title='Organisations', items=items)
+
+
+@app.route('/charms')
+def charms():
+    items = Item.query.filter(Item.type.in_([2])).all()
+    return render_template("list_items.html", page_title='Charms', items=items)
+
+
+@app.route('/headgears')
+def headgears():
+    items = Item.query.filter(Item.type.in_([3])).all()
+    return render_template("list_items.html", page_title='Headgears', items=items)
+
+
+@app.route('/uniforms')
+def uniforms():
+    items = Item.query.filter(Item.type.in_([4])).all()
+    return render_template("list_items.html", page_title='Uniforms', items=items)
+
+
+@app.route('/skins')
+def skins():
+    items = Item.query.filter(Item.type.in_([7])).all()
+    return render_template("list_items.html", page_title='Skins', items=items)
