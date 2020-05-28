@@ -24,3 +24,8 @@ nav a {
 nav a:hover {
     background-color: #777777;
 }
+
+.small_image {
+    width: 100px;
+    height: 100px
+}
