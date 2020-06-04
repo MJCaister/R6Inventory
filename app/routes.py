@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, flash
 from app import app, db
-from app.models import Item, ItemType
+from app.models import Item, ItemType, OperatorOrg
 # from app.forms import
 
 # charm = Item.query.filter(Item.type.in_([2])).all()
@@ -70,7 +70,11 @@ def weapon(weapon):
 def operator(operator):
     operator = operator.replace("%20", " ")
     item = Item.query.filter_by(name=operator).first_or_404()
-    return render_template("item.html", page_title=operator, item=item)
+    print(item.id)
+    op_org = OperatorOrg.query.filter_by(operator_id=item.id).first()
+    print(op_org)
+    org = Item.query.filter_by(id=op_org.org_id).first()
+    return render_template("item.html", page_title=operator, item=item, org=org)
 
 
 @app.route('/organisation/<organisation>')

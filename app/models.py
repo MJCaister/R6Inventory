@@ -1,7 +1,4 @@
 # coding: utf-8
-from sqlalchemy import Column, ForeignKey, Integer, Table, Text
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import NullType
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -18,13 +15,6 @@ class Item(db.Model):
     large_image = db.Column(db.Text(64))
 
     item_type = db.relationship('ItemType', primaryjoin='Item.type == ItemType.id', backref='items')
-    orgs = db.relationship(
-        'Item',
-        secondary='operator_org',
-        primaryjoin='Item.id == operator_org.c.operator_id',
-        secondaryjoin='Item.id == operator_org.c.org_id',
-        backref='items'
-    )
     users = db.relationship('User', secondary='user_item', backref='items')
 
 
@@ -38,12 +28,10 @@ class ItemType(db.Model):
 class OperatorOrg(db.Model):
     __tablename__ = 'operator_org'
 
+    id = db.Column(db.Integer, primary_key=True)
     operator_id = db.Column(db.ForeignKey('Item.id'))
     org_id = db.Column(db.ForeignKey('Item.id'))
-
-    operator = db.relationship('Item')
     
-
 
 class User(db.Model):
     __tablename__ = 'user'
