@@ -35,11 +35,14 @@ class ItemType(db.Model):
     name = db.Column(db.Text(16), nullable=False)
 
 
-t_operator_org = db.Table(
-    'operator_org',
-    db.Column('operator_id', db.ForeignKey('item.id')),
-    db.Column('org_id', db.ForeignKey('item.id'))
-)
+class OperatorOrg(db.Model):
+    __tablename__ = 'operator_org'
+
+    operator_id = db.Column(db.ForeignKey('Item.id'))
+    org_id = db.Column(db.ForeignKey('Item.id'))
+
+    operator = db.relationship('Item')
+    
 
 
 class User(db.Model):
