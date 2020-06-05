@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{% for item in items %}
-<a href="/{{ item.item_type.name }}/{{ item.name }}">{{ item.name }}</a>
-{% endfor %}
-
+<br>
+<div id="item_list">
+    {% for item in items %}
+    <a href="/{{ item.item_type.name }}/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">{{ item.name }}</a>
+    {% endfor %}
+</div>
 {% endblock %}

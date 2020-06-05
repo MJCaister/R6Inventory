@@ -13,6 +13,7 @@ class Item(db.Model):
     type = db.Column(db.ForeignKey('item_type.id'))
     small_image = db.Column(db.Text(64))
     large_image = db.Column(db.Text(64))
+    gained = db.Column(db.Text(64))
 
     item_type = db.relationship('ItemType', primaryjoin='Item.type == ItemType.id', backref='items')
     users = db.relationship('User', secondary='user_item', backref='items')

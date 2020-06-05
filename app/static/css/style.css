@@ -29,3 +29,7 @@ nav a:hover {
     width: 100px;
     height: 100px
 }
+
+#item_list {
+    display: inline-list-item;
+}
