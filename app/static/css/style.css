@@ -1,5 +1,6 @@
 html {
     font-family: 'Open Sans', monospace;
+    background-color: #777777;
 }
 
 nav {
@@ -22,14 +23,25 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #777777;
+    background-color: #555555;
 }
 
 .small_image {
     width: 100px;
-    height: 100px
+    height: 100px;
 }
 
 #item_list {
     display: inline-list-item;
+}
+
+.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.item_caption {
+    display: block;
 }
