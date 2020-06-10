@@ -1,6 +1,7 @@
 html {
     font-family: 'Open Sans', monospace;
     background-color: #777777;
+    color: whitesmoke;
 }
 
 nav {
@@ -26,6 +27,10 @@ nav a:hover {
     background-color: #555555;
 }
 
+a {
+    color: aliceblue;
+}
+
 .small_image {
     width: 100px;
     height: 100px;
@@ -44,4 +49,17 @@ nav a:hover {
 
 .item_caption {
     display: block;
+}
+
+.user {
+    float: right;
+}
+
+#profile {
+
+}
+
+#profile img {
+    border: aliceblue 2px solid;
+    border-radius: 100%;
 }

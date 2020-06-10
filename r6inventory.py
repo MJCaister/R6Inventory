@@ -1,7 +1,8 @@
-from app import db
+import sys
+
 # form app.models import
 from app import app
-import sys
+from app import db
 
 print("\nPython Ver: " + sys.version + "\n")
 

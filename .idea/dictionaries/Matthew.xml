@@ -4,6 +4,8 @@
       <w>endblock</w>
       <w>endfor</w>
       <w>endwith</w>
+      <w>headgears</w>
+      <w>identicon</w>
       <w>proleague</w>
       <w>sqlalchemy</w>
       <w>tablename</w>

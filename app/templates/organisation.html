@@ -8,7 +8,12 @@
 <div id="sub_item">
     <p><b>Operators:</b></p>
     {% for op in ops %}
-    <a href="/operator/{{ op.name }}">{{ op.name }}</a>
+    <figure class="item">
+    <a href="/operator/{{ op.name }}">
+        <img class="small_image" src="{{ op.small_image }}">
+        <figcaption class="item_caption">{{ op.name }}</figcaption>
+    </a>
+    </figure>
     {% endfor %}
 </div>
 {% endblock %}
