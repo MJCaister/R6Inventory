@@ -20,7 +20,9 @@ class Item(db.Model):
     large_image = db.Column(db.Text(64))
     gained = db.Column(db.Text(64))
 
-    item_type = db.relationship('ItemType', primaryjoin='Item.type == ItemType.id', backref='items')
+    item_type = db.relationship('ItemType',
+                                primaryjoin='Item.type == ItemType.id',
+                                backref='items')
     users = db.relationship('User', secondary='user_item', backref='items')
 
 
@@ -58,7 +60,8 @@ class User(db.Model, UserMixin):
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s{}'.format(digest, size)
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s{}'.format(
+                                                                  digest, size)
 
 
 t_user_item = db.Table(

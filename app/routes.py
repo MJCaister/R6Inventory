@@ -73,19 +73,22 @@ def user(username):
 @app.route('/weapons')
 def weapons():
     items = Item.query.filter(Item.type.in_([8])).all()
-    return render_template("list_items.html", page_title='Weapons', items=items)
+    return render_template("list_items.html", page_title='Weapons',
+                           items=items)
 
 
 @app.route('/operators')
 def operators():
     items = Item.query.filter(Item.type.in_([5])).all()
-    return render_template("list_items.html", page_title='Operators', items=items)
+    return render_template("list_items.html", page_title='Operators',
+                           items=items)
 
 
 @app.route('/organisations')
 def organisations():
     items = Item.query.filter(Item.type.in_([6])).all()
-    return render_template("list_items.html", page_title='Organisations', items=items)
+    return render_template("list_items.html", page_title='Organisations',
+                           items=items)
 
 
 @app.route('/charms')
@@ -97,13 +100,15 @@ def charms():
 @app.route('/headgears')
 def headgears():
     items = Item.query.filter(Item.type.in_([3])).all()
-    return render_template("list_items.html", page_title='Headgears', items=items)
+    return render_template("list_items.html", page_title='Headgears',
+                           items=items)
 
 
 @app.route('/uniforms')
 def uniforms():
     items = Item.query.filter(Item.type.in_([4])).all()
-    return render_template("list_items.html", page_title='Uniforms', items=items)
+    return render_template("list_items.html", page_title='Uniforms',
+                           items=items)
 
 
 @app.route('/skins')
@@ -125,7 +130,8 @@ def operator(operator):
     item = Item.query.filter_by(name=operator).first_or_404()
     op_org = OperatorOrg.query.filter_by(operator_id=item.id).first()
     org = Item.query.filter_by(id=op_org.org_id).first()
-    return render_template("operator.html", page_title=operator, item=item, org=org)
+    return render_template("operator.html", page_title=operator, item=item,
+                           org=org)
 
 
 @app.route('/organisation/<organisation>')
@@ -137,7 +143,8 @@ def organisation(organisation):
     for op in org_ops:
         ops_temp.append(op.operator_id)
     ops = Item.query.filter(Item.id.in_(ops_temp)).all()
-    return render_template("organisation.html", page_title=organisation, item=item, ops=ops)
+    return render_template("organisation.html", page_title=organisation,
+                           item=item, ops=ops)
 
 
 @app.route('/charm/<charm>')
