@@ -41,6 +41,14 @@ class OperatorOrg(db.Model):
     org_id = db.Column(db.ForeignKey('Item.id'))
 
 
+class OperatorItem(db.Model):
+    __tablename__ = 'operator_item'
+
+    id = db.Column(db.Integer, primary_key=True)
+    operator_id = db.Column(db.ForeignKey('Item.id'))
+    item_id = db.Column(db.ForeignKey('Item.id'))
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
 

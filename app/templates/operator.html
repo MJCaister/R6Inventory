@@ -9,4 +9,17 @@
 <div id="sub_item">
     <p><b>Organisation:</b> <a href="/organisation/{{ org.name }}">{{ org.name }}</a></p>
 </div>
+<div id="sub_item">
+    <p><b>Weapons:</b></p>
+    {% for item in items %}
+    {% if item.type == 8 %}
+    <figure class="item">
+    <a href="/weapon/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">
+        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    </a>
+    </figure>
+    {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}

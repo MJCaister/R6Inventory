@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm
-from app.models import Item, OperatorOrg, User
+from app.models import Item, OperatorOrg, User, OperatorItem
 
 
 # charm = Item.query.filter(Item.type.in_([2])).all()
@@ -121,17 +121,30 @@ def skins():
 def weapon(weapon):
     weapon = weapon.replace("%20", " ")
     item = Item.query.filter_by(name=weapon).first_or_404()
-    return render_template("weapon.html", page_title=weapon, item=item)
+
+    item_ops = OperatorItem.query.filter_by(item_id=item.id).all()
+    ops_temp = []
+    for op in item_ops:
+        ops_temp.append(op.operator_id)
+    ops = Item.query.filter(Item.id.in_(ops_temp)).all()
+    return render_template("weapon.html", page_title=weapon, item=item, ops=ops)
 
 
 @app.route('/operator/<operator>')
 def operator(operator):
     operator = operator.replace("%20", " ")
     item = Item.query.filter_by(name=operator).first_or_404()
+
     op_org = OperatorOrg.query.filter_by(operator_id=item.id).first()
     org = Item.query.filter_by(id=op_org.org_id).first()
+
+    op_items = OperatorItem.query.filter_by(operator_id=item.id).all()
+    items_temp = []
+    for item in op_items:
+        items_temp.append(item.item_id)
+    items = Item.query.filter(Item.id.in_(items_temp)).all()
     return render_template("operator.html", page_title=operator, item=item,
-                           org=org)
+                           org=org, items=items)
 
 
 @app.route('/organisation/<organisation>')
