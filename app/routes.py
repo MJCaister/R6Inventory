@@ -186,3 +186,8 @@ def skin(skin):
     skin = skin.replace("%20", " ")
     item = Item.query.filter_by(name=skin).first_or_404()
     return render_template("skin.html", page_title=skin, item=item)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
