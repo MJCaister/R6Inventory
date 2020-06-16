@@ -134,15 +134,16 @@ def weapon(weapon):
 def operator(operator):
     operator = operator.replace("%20", " ")
     item = Item.query.filter_by(name=operator).first_or_404()
+    print(item.small_image)
 
     op_org = OperatorOrg.query.filter_by(operator_id=item.id).first()
     org = Item.query.filter_by(id=op_org.org_id).first()
 
     op_items = OperatorItem.query.filter_by(operator_id=item.id).all()
-    items_temp = []
-    for item in op_items:
-        items_temp.append(item.item_id)
-    items = Item.query.filter(Item.id.in_(items_temp)).all()
+    opitems_temp = []
+    for i in op_items:
+        opitems_temp.append(i.item_id)
+    items = Item.query.filter(Item.id.in_(opitems_temp)).all()
     return render_template("operator.html", page_title=operator, item=item,
                            org=org, items=items)
 
