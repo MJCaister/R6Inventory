@@ -68,6 +68,7 @@ class User(db.Model, UserMixin):
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        print(digest)
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s{}'.format(
                                                                   digest, size)
 
