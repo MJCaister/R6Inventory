@@ -35,7 +35,7 @@ a {
 .small_image {
     width: 100px;
     height: 100px;
-    border-radius: 15%;
+    border-radius: 5%;
 }
 
 #item_list {
