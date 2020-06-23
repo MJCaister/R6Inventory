@@ -3,3 +3,4 @@ flask-sqlalchemy
 flask-login
 WTForms~=2.2.1
 Werkzeug~=1.0.0
+wtforms-validators
