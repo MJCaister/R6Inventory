@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="5983b430-f834-4160-a805-98da1ac95dfb" data-blockingmode="auto" type="text/javascript"></script>-->
     <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+        if (localStorage.getItem(‘cookieSeen’) != ‘shown’) {
+            $(‘.cookie-banner’).delay(2000).fadeIn();
+            localStorage.setItem(‘cookieSeen’,’shown’)
+        };
+        $(‘.close’).click(function() {
+            $(‘.cookie-banner’).fadeOut();
+        })
+    </script>
 
     <title>R6 Inventory - {{ page_title }}</title>
 </head>
@@ -24,6 +34,8 @@
     {% endblock %}
     <br>
     <hr>
+    {% include "cookies.html" % }
+    <!--<script id="CookieDeclaration" src="https://consent.cookiebot.com/5983b430-f834-4160-a805-98da1ac95dfb/cd.js" type="text/javascript" async></script>-->
     {% include 'footer.html' %}
 </body>
 </html>
