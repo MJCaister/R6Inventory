@@ -82,6 +82,9 @@ class User(db.Model, UserMixin):
     def verify_reset_password_token(token):
         try:
             id = jwt.decode(token, app.config['SECRET_KEY'], algorthims=['HS256'])
+        except:
+            return
+        return User.query.get(id)
 
 t_user_item = db.Table(
     'user_item',
