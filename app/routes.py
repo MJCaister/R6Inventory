@@ -76,16 +76,16 @@ def register():
     return render_template('register.html', page_title='Register', form=form)
 
 
-@app.route('/reset_password/<token>', methods=["GET", "POST"])
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('home'))
-    form = ResetPasswordForm
+    form = ResetPasswordForm()
     if form.validate_on_submit():
-        user.set_password(form.password.data)
+        user.set_password(form.password.data) # TODO: Change to in session update
         db.session.commit()
         flash('Your password has been reset')
         return redirect(url_for('login'))
