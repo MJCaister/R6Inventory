@@ -9,9 +9,9 @@ class Config(object):
                               'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    MAIL_SERVER = os.environ.get('MAIL_SERVER')
-    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = 1
     # School passwords are already in plaintext but its about time to commit another sin
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'ruru2117'
+    MAIL_PASSWORD ='ruru2117' 
     ADMINS = ['16086@burnside.school.nz']

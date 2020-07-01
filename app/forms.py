@@ -18,7 +18,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),
                            AlphaNumeric(message="Alphanumeric only")],
-                           render_kw={"placeholder": "  Username"})
+                           render_kw={"placeholder": "Username"})
     email = StringField('Email', validators=[DataRequired(),
                         Email()],
                         render_kw={"placeholder":
@@ -26,7 +26,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(),
                              Length(min=8),
                              AlphaNumeric(message="Alphanumeric only")],
-                             render_kw={"placeholder": "  Password"})
+                             render_kw={"placeholder": "Password"})
     password2 = PasswordField('Repeat Password', validators=[DataRequired(""),
                               EqualTo('password', message="Passwords must match")],
                               render_kw={"placeholder": "Confirm password"})
