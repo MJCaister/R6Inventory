@@ -4,9 +4,13 @@
       <w>endblock</w>
       <w>endfor</w>
       <w>endwith</w>
+      <w>gmail</w>
       <w>headgears</w>
       <w>identicon</w>
+      <w>opitems</w>
       <w>proleague</w>
+      <w>ruru</w>
+      <w>smtp</w>
       <w>sqlalchemy</w>
       <w>tablename</w>
       <w>weaps</w>

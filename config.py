@@ -13,5 +13,5 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = 1
     # School passwords are already in plaintext but its about time to commit another sin
-    MAIL_PASSWORD ='ruru2117' 
-    ADMINS = ['16086@burnside.school.nz']
+    MAIL_PASSWORD = ''
+    ADMINS = ['nukescrew@gmail.com']
