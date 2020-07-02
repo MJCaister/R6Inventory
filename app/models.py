@@ -85,7 +85,7 @@ class User(db.Model, UserMixin):
                             algorithms=['HS256'])['reset_password']
         except:
             return
-        return db.session.query(User).filter_by(id=id).first()
+        return User.query.get(id)
 
 
 t_user_item = db.Table(
