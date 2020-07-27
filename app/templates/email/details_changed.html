@@ -1,0 +1,7 @@
+<p>Hello {{ user.username }},</p>
+<p>
+    Your account details have been changed. If you did not make this change, please go to our website and reset your password immediately:
+    <a href={{ url_for('login', _external=True) }}>Reset your password</a>
+</p>
+<p>You can alternatively paste this link in your browser: {{ url_for('login', _external=True) }}</p>
+<p>R6Inventory</p>

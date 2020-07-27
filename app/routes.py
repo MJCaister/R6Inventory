@@ -1,10 +1,10 @@
-from flask import render_template, url_for, redirect, flash, request
+from flask import render_template, url_for, redirect, flash, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
 from app.email import send_password_reset_email
-from app.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.forms import *
 from app.models import Item, OperatorOrg, User, OperatorItem
 
 
@@ -81,7 +81,6 @@ def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     user = User.verify_reset_password_token(token)
-    print(user)
     if not user:
         return redirect(url_for('home'))
     form = ResetPasswordForm()
@@ -99,6 +98,29 @@ def reset_password(token):
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user=user)
+
+
+@app.route('/user/<username>/settings')
+@login_required
+def user_settings(username):
+    if current_user.username is not username:
+        abort(403)
+    form = ChangeProfileInformationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first_or_404()
+        if form.username.data is not None:
+            user.set_username(form.username.data)
+        if form.email.data is not None:
+            user.set_email(form.email.data)
+        if form.username.data is not None and form.email.data is None:
+            flash("No data was entered")
+            return redirect(url_for(user_settings, username))
+        flash("Profile information has been changed")
+        return redirect(url_for('home'))
+    return render_template('user_settings.html', form=form)
+
+
+
 
 
 @app.route('/weapons')
@@ -223,3 +245,8 @@ def skin(skin):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+
+# @app.errorhandler(403)
+# def forbidden(e):
+#    return render_template('403.html', 403)

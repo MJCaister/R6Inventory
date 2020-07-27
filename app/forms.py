@@ -56,3 +56,22 @@ class ResetPasswordForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
+
+
+class ChangeProfileInformationForm(FlaskForm):
+    username = StringField('New Username', validators=[AlphaNumeric(message="Alphanumeric only")],
+                           render_kw={"placeholder": "Username"})
+    email = StringField('New Email', validators=[Email()],
+                        render_kw={"placeholder":
+                                   "Email: example@example.com"})
+    email_confirm = StringField('Please enter your new email again', validators=[EqualTo(email, "Email addresses do not match")])
+    password = StringField("Please enter your password to confirm these changes",
+                           validators=[DataRequired(),
+                           Length(min=8),
+                           AlphaNumeric(message="Alphanumeric only")],
+                           render_kw={"placeholder": "Password"})
+    submit = SubmitField("Confirm Account Detail Changes")
+
+
+
+    

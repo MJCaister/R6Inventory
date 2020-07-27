@@ -69,6 +69,12 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def set_username(self, username):
+        self.username = username
+
+    def set_email(self, email):
+        self.email = email
+
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         print(digest)

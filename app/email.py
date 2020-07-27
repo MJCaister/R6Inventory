@@ -25,3 +25,23 @@ def send_password_reset_email(user):
                                          user=user, token=token),
                html_body=render_template('email/reset_password.html',
                                          user=user, token=token))
+
+
+def send_profile_information_changed_email(user, new_email=None):
+    if new_email is not None:
+        send_email('R6Inventory | Account details changed',
+        sender=app.config['ADMINS'][0],
+        recipients=[user.email, new_email],
+        text_body=render_template('email/details_changed.txt',
+                                  user=user),
+        html_body=render_template('email/details_changed.html',
+                                  user=user))
+    else:
+        send_email('R6Inventory | Account details changed',
+        sender=app.config['ADMINS'][0],
+        recipients=[user.email],
+        text_body=render_template('email/details_changed.txt',
+                                  user=user),
+        html_body=render_template('email/details_changed.html',
+                                  user=user))
+    

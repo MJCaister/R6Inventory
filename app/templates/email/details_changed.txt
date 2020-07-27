@@ -1,0 +1,9 @@
+Hello {{ user.username }},
+
+Your account details have been changed. If you did not make this change, please go to our website and reset your password immediately:
+
+{{ url_for('login', _external=True) }}
+
+You can alternatively paste this link in your browser: {{ url_for('login', _external=True) }}
+
+R6Inventory
