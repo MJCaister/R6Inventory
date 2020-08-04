@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Optional
 from wtforms_validators import AlphaNumeric
 
 from app.models import User
@@ -59,18 +59,29 @@ class ResetPasswordForm(FlaskForm):
 
 
 class ChangeProfileInformationForm(FlaskForm):
-    username = StringField('New Username', validators=[AlphaNumeric(message="Alphanumeric only")],
-                           render_kw={"placeholder": "Username"})
-    email = StringField('New Email', validators=[Email()],
+    username = StringField('New Username', validators=[Optional(), AlphaNumeric(message="Alphanumeric only")],
+                           render_kw={"placeholder": "New username"})
+    email = StringField('New Email', validators=[Optional(), Email()],
                         render_kw={"placeholder":
-                                   "Email: example@example.com"})
-    email_confirm = StringField('Please enter your new email again', validators=[EqualTo(email, "Email addresses do not match")])
-    password = StringField("Please enter your password to confirm these changes",
-                           validators=[DataRequired(),
-                           Length(min=8),
-                           AlphaNumeric(message="Alphanumeric only")],
-                           render_kw={"placeholder": "Password"})
+                                   "New email: example@example.com"})
+    email_confirm = StringField('Please enter your new email again', validators=[Optional(), EqualTo('email', "Email addresses do not match")],
+                                render_kw={"placeholder": "Confirm your new email"})
+    password = PasswordField("Please enter your password to confirm these changes",
+                           validators=[DataRequired()],
+                           render_kw={"placeholder": "Enter your password to confirm profile changes"})
     submit = SubmitField("Confirm Account Detail Changes")
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError(
+                'An account with this username is already in use')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError(
+                'An account with this email address in already in use')
 
 
 

@@ -13,6 +13,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
+    print('Sent Email')
     Thread(target=send_async_email, args=(app, msg)).start()
 
 
@@ -29,6 +30,7 @@ def send_password_reset_email(user):
 
 def send_profile_information_changed_email(user, new_email=None):
     if new_email is not None:
+        print('Sending new email to {}, {}'.format(new_email, user.email))
         send_email('R6Inventory | Account details changed',
         sender=app.config['ADMINS'][0],
         recipients=[user.email, new_email],
@@ -37,6 +39,7 @@ def send_profile_information_changed_email(user, new_email=None):
         html_body=render_template('email/details_changed.html',
                                   user=user))
     else:
+        print('Sending new email to {}'.format(user.email))
         send_email('R6Inventory | Account details changed',
         sender=app.config['ADMINS'][0],
         recipients=[user.email],

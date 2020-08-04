@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
-from app.email import send_password_reset_email
+from app.email import send_password_reset_email, send_profile_information_changed_email
 from app.forms import *
 from app.models import Item, OperatorOrg, User, OperatorItem
 
@@ -100,21 +100,29 @@ def user(username):
     return render_template('user.html', user=user)
 
 
-@app.route('/user/<username>/settings')
+@app.route('/user/<username>/settings', methods=["GET", "POST"])
 @login_required
 def user_settings(username):
-    if current_user.username is not username:
+    print(current_user.username)
+    print(username)
+    if current_user.username != username:
         abort(403)
     form = ChangeProfileInformationForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=username).first_or_404()
-        if form.username.data is not None:
+        if form.username.data != '':
             user.set_username(form.username.data)
-        if form.email.data is not None:
+            db.session.query(User).filter_by(id=user.id).update({User.username: user.username})
+            send_profile_information_changed_email(user)
+        if form.email.data != '':
+            new_email = user.email
             user.set_email(form.email.data)
-        if form.username.data is not None and form.email.data is None:
+            db.session.query(User).filter_by(id=user.id).update({User.email: user.email})
+            send_profile_information_changed_email(user, new_email)
+        if form.username.data == '' and form.email.data == '':
             flash("No data was entered")
-            return redirect(url_for(user_settings, username))
+            return redirect(url_for('user_settings', username=username))
+        db.session.commit()
         flash("Profile information has been changed")
         return redirect(url_for('home'))
     return render_template('user_settings.html', form=form)

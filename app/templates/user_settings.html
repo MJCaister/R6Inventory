@@ -16,13 +16,13 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.confirm_email(size=64) }}
-            {% for error in form.confirm_email.errors %}<br>
+            {{ form.email_confirm(size=64) }}
+            {% for error in form.email_confirm.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
         <p>
-            {{ form.password(size=32) }}
+            {{ form.password(size=40) }}
             {% for error in form.password.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}

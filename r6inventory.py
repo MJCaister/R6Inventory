@@ -5,6 +5,7 @@ from app import app
 from app import db
 
 print("\nPython Ver: " + sys.version + "\n")
+print(app.config['MAIL_SERVER'])
 
 
 @app.shell_context_processor
