@@ -4,6 +4,7 @@ html {
     color: whitesmoke;
 }
 
+/* NAV */
 nav {
     background-color: #333333;
     width: 100%;
@@ -27,34 +28,32 @@ nav a {
 nav a:hover {
     background-color: #555555;
 }
+/* END */
 
-.cookie-banner {
-  position: fixed;
-  bottom: 40px;
-  left: 10%;
-  right: 10%;
-  width: 80%;
-  padding: 5px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #eee;
-  border-radius: 5px;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-
-.close {
-  height: 20px;
-  background-color: #777;
-  border: none;
-  color: white;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
+/* General Page Setup */
 a {
     color: aliceblue;
 }
+
+.cookies {
+    border: 2px solid #333333;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+}
+/* END */
+
+/* Forms */
+input {
+    border-radius: 5px;
+    padding: 5px;
+}
+/* END */
 
 .small_image {
     width: 100px;

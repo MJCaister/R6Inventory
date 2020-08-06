@@ -6,7 +6,19 @@
     <tr valign="top">
         <td><img src="{{ user.avatar(128) }}"></td>
         <td><h1>User: {{ user.username }}</h1></td>
-        <td><a href="{{ url_for('user_settings', username=user.username)}}">Change Profile Information</a></td>
     </tr>
 </table>
+<a href="{{ url_for('user_settings', username=user.username)}}" style='text-align: right;'>Change Profile Information</a>
+
+<div id="item_list">
+    {% for item in items %}
+    <figure class="item">
+    <a href="/{{ item.item_type.name }}/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">
+        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
+
 {% endblock %}

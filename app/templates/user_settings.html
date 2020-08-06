@@ -3,20 +3,21 @@
     <h1>Change User Information</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
+        <p>Set a new Username or new Email here</p>
         <p>
             {{ form.username(size=32) }}
             {% for error in form.username.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
-            {{ form.email(size=64) }}
+        <p >
+            {{ form.email(size=40) }}
             {% for error in form.email.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
-            {{ form.email_confirm(size=64) }}
+        <p >
+            {{ form.email_confirm(size=40) }}
             {% for error in form.email_confirm.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
