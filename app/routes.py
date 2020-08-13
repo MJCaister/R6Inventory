@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.email import send_password_reset_email, send_profile_information_changed_email
-from app.forms import *
+from app.forms import (LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangeProfileInformationForm)
 from app.models import Item, OperatorOrg, User, OperatorItem
 
 
