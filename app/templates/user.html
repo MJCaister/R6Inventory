@@ -8,7 +8,7 @@
         <td><h1>User: {{ user.username }}</h1></td>
     </tr>
 </table>
-<a href="{{ url_for('user_settings', username=user.username)}}" style='text-align: right;'>Change Profile Information</a>
+<a href="{{ url_for('user_settings', username=user.username)}}" style='float: right;'>Change Profile Information</a>
 
 <div id="item_list">
     {% for item in items %}

@@ -103,8 +103,6 @@ def user(username):
 @app.route('/user/<username>/settings', methods=["GET", "POST"])
 @login_required
 def user_settings(username):
-    print(current_user.username)
-    print(username)
     if current_user.username != username:
         abort(403)
     form = ChangeProfileInformationForm()
@@ -195,7 +193,6 @@ def weapon(weapon):
 def operator(operator):
     operator = operator.replace("%20", " ")
     item = Item.query.filter_by(name=operator).first_or_404()
-    print(item.small_image)
 
     op_org = OperatorOrg.query.filter_by(operator_id=item.id).first()
     org = Item.query.filter_by(id=op_org.org_id).first()

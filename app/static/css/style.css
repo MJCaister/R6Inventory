@@ -29,10 +29,21 @@ nav a:hover {
     background-color: #555555;
 }
 
+.user {
+    float: right;
+}
+
+.user a { 
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+}
+
 .nav_profile {
     width: 32px;
     height: 32px;
-    border-radius: 5%;
+    border-radius: 100%;
+}
 /* END */
 
 /* General Page Setup */
@@ -85,10 +96,6 @@ input {
 
 .item_caption {
     display: block;
-}
-
-.user {
-    float: right;
 }
 
 #profile {
