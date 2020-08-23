@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Optional
 from wtforms_validators import AlphaNumeric
 
-from app.models import User
+from app.models import User, ItemType
 
 
 class LoginForm(FlaskForm):
@@ -84,5 +84,9 @@ class ChangeProfileInformationForm(FlaskForm):
                 'An account with this email address in already in use')
 
 
-
+class UploadNewItemForm(FlaskForm):
+    item_types = ItemType.query.filter_by(ItemType.name).all()
+    name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "Item Name"})
+    item_type = SelectField('Item Type', choices=item_types)
+    small_image = FileField()
     

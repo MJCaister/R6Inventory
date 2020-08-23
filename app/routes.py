@@ -126,7 +126,10 @@ def user_settings(username):
     return render_template('user_settings.html', form=form)
 
 
-
+@app.route('/new_item', methods=['POST'])
+@login_required
+def new_item():
+    13
 
 
 @app.route('/weapons')
