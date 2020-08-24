@@ -85,8 +85,9 @@ class ChangeProfileInformationForm(FlaskForm):
 
 
 class UploadNewItemForm(FlaskForm):
-    item_types = ItemType.query.filter_by(ItemType.name).all()
     name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "Item Name"})
-    item_type = SelectField('Item Type', choices=item_types)
-    small_image = FileField()
+    item_type = SelectField('Item Type', choices=["Charm", "Headgear", "Uniform"], validators=[DataRequired()])
+    small_image = FileField("Grid Image", validators=[DataRequired()])
+    large_image = FileField("Full Sized Image", validators=[DataRequired()])
+    submit = SubmitField("Request new item to be added")
     

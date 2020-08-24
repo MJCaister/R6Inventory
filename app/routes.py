@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.email import send_password_reset_email, send_profile_information_changed_email
-from app.forms import (LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangeProfileInformationForm)
+from app.forms import (LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangeProfileInformationForm, UploadNewItemForm)
 from app.models import Item, OperatorOrg, User, OperatorItem
 
 
@@ -90,14 +90,14 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset')
         return redirect(url_for('login'))
-    return render_template("reset_password.html", form=form)
+    return render_template("reset_password.html", form=form, page_title='Reset password')
 
 
 @app.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, page_title=username)
 
 
 @app.route('/user/<username>/settings', methods=["GET", "POST"])
@@ -123,13 +123,18 @@ def user_settings(username):
         db.session.commit()
         flash("Profile information has been changed")
         return redirect(url_for('home'))
-    return render_template('user_settings.html', form=form)
+    return render_template('user_settings.html', form=form, page_title=username + 'settings')
 
 
 @app.route('/new_item', methods=['POST'])
 @login_required
 def new_item():
-    13
+    form = UploadNewItemForm()
+    if form.validate_on_submit():
+        # Do stuff
+        print()
+    return render_template("new_item.html", form=form, page_title='New Item')
+
 
 
 @app.route('/weapons')
@@ -254,6 +259,10 @@ def skin(skin):
 def page_not_found(e):
     return render_template('404.html'), 404
 
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'), 403
 
 # @app.errorhandler(403)
 # def forbidden(e):
