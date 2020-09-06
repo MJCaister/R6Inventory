@@ -17,7 +17,8 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),
-                           AlphaNumeric(message="Alphanumeric only")],
+                           AlphaNumeric(message="Alphanumeric only"),
+                           Length(max=16)],
                            render_kw={"placeholder": "Username"})
     email = StringField('Email', validators=[DataRequired(),
                         Email()],
@@ -52,15 +53,16 @@ class ResetPasswordRequestForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()],
-                             Length(min=8))
+    password = PasswordField('Password', validators=[DataRequired(),
+                             Length(min=8)])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
 
 
 class ChangeProfileInformationForm(FlaskForm):
-    username = StringField('New Username', validators=[Optional(), AlphaNumeric(message="Alphanumeric only")],
+    username = StringField('New Username', validators=[Optional(), AlphaNumeric(message="Alphanumeric only"),
+                           Length(max=16)],
                            render_kw={"placeholder": "New username"})
     email = StringField('New Email', validators=[Optional(), Email()],
                         render_kw={"placeholder":
