@@ -73,6 +73,16 @@ input {
 }
 /* END */
 
+/* Flashes */
+#flash {
+    margin-top: 5px;
+    background-color: #dd2222;
+    border: 2px solid #882222;
+    border-radius: 10px;
+    list-style-type: none;
+}
+/* END */
+
 .small_image {
     width: 100px;
     height: 100px;
