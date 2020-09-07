@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileF
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Optional
 from wtforms_validators import AlphaNumeric
 
-from app.models import User, ItemType
+from app.models import User, ItemType, Item
 
 
 class LoginForm(FlaskForm):
@@ -64,11 +64,14 @@ class ChangeProfileInformationForm(FlaskForm):
     email = StringField('New Email', validators=[Optional(), Email()],
                         render_kw={"placeholder":
                                    "New email: example@example.com"})
-    email_confirm = StringField('Please enter your new email again', validators=[Optional(), EqualTo('email', "Email addresses do not match")],
+    email_confirm = StringField('Please enter your new email again', validators=[Optional(),
+                                                                                 EqualTo('email',
+                                                                                         "Email addresses do not match")
+                                                                                 ],
                                 render_kw={"placeholder": "Confirm your new email"})
     password = PasswordField("Please enter your password to confirm these changes",
-                           validators=[DataRequired()],
-                           render_kw={"placeholder": "Enter your password to confirm profile changes"})
+                             validators=[DataRequired()],
+                             render_kw={"placeholder": "Enter your password to confirm profile changes"})
     submit = SubmitField("Confirm Account Detail Changes")
 
     def validate_username(self, username):
@@ -85,9 +88,14 @@ class ChangeProfileInformationForm(FlaskForm):
 
 
 class UploadNewItemForm(FlaskForm):
+    operator_query = Item.query.filter(Item.type.in_([5])).all()
+    operators = []
+    for op in operator_query:
+        operators.append(op.name)
+
+
     name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "Item Name"})
-    item_type = SelectField('Item Type', choices=["Charm", "Headgear", "Uniform"], validators=[DataRequired()])
+    item_type = SelectField('Item Type', choices=["Charm", "Headgear", "Uniform", ""], validators=[DataRequired()])
     small_image = FileField("Grid Image", validators=[DataRequired()])
     large_image = FileField("Full Sized Image", validators=[DataRequired()])
     submit = SubmitField("Request new item to be added")
-    

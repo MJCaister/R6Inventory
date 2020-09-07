@@ -136,7 +136,6 @@ def new_item():
     return render_template("new_item.html", form=form, page_title='New Item')
 
 
-
 @app.route('/weapons')
 def weapons():
     items = Item.query.filter(Item.type.in_([8])).all()
@@ -264,6 +263,7 @@ def page_not_found(e):
 def forbidden(e):
     return render_template('403.html'), 403
 
-# @app.errorhandler(403)
-# def forbidden(e):
-#    return render_template('403.html', 403)
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html', 403)
