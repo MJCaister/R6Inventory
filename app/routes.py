@@ -42,7 +42,11 @@ def login():
 
 @app.route('/logout')
 def logout():
-    logout_user()
+    try:
+        flash("Successfully logged out user {}".format(current_user.username))
+        logout_user()
+    except AttributeError:
+        flash("User already logged out")
     return redirect(url_for('home'))
 
 
@@ -263,7 +267,3 @@ def page_not_found(e):
 @app.errorhandler(403)
 def forbidden(e):
     return render_template('403.html'), 403
-
-# @app.errorhandler(403)
-# def forbidden(e):
-#    return render_template('403.html', 403)
