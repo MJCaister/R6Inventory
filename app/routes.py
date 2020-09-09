@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.email import send_password_reset_email, send_profile_information_changed_email
 from app.forms import (LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangeProfileInformationForm, UploadNewItemForm)
-from app.models import Item, OperatorOrg, User, OperatorItem
+from app.models import Item, OperatorOrg, User, OperatorItem, UserItem, ItemType
 
 
 # charm = Item.query.filter(Item.type.in_([2])).all()
@@ -127,7 +127,7 @@ def user_settings(username):
         db.session.commit()
         flash("Profile information has been changed")
         return redirect(url_for('home'))
-    return render_template('user_settings.html', form=form, page_title=username + 'settings')
+    return render_template('user_settings.html', form=form, page_title=username + "'s settings")
 
 
 @app.route('/new_item', methods=['POST'])
@@ -138,6 +138,39 @@ def new_item():
         # Do stuff
         print()
     return render_template("new_item.html", form=form, page_title='New Item')
+
+
+@app.route('/add_to_inventory/<item_name>')
+@login_required
+def add_to_inventory(item_name):
+    item = Item.query.filter_by(name=item_name).first()
+    item_type = ItemType.query.filter_by(id=item.type).first()
+    in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory is None:
+        item_to_add = UserItem(user_id=current_user.id, item_id=item.id, item_type=item.type)
+        db.session.add(item_to_add)
+        db.session.commit()
+        flash("Successfully added new item to your inventory")
+        return redirect("/{}/{}".format(item_type.name, item.name))
+    else:
+        flash("Item is already in your inventory")
+        return redirect("/{}/{}".format(item_type.name, item.name))
+
+
+@app.route('/remove_from_inventory/<item_name>')
+@login_required
+def remove_from_inventory(item_name):
+    item = Item.query.filter_by(name=item_name).first()
+    item_type = ItemType.query.filter_by(id=item.type).first()
+    in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory is not None:
+        db.session.query(UserItem).filter_by(user_id=current_user.id, item_id=item.id).delete()
+        db.session.commit()
+        flash("Successfully removed item from your inventory")
+        return redirect("/{}/{}".format(item_type.name, item.name))
+    else:
+        flash("Item is not in your inventory")
+        return redirect("/{}/{}".format(item_type.name, item.name))
 
 
 @app.route('/weapons')
@@ -163,6 +196,7 @@ def organisations():
 
 @app.route('/charms')
 def charms():
+    flash("Support for charms will be added in the future")
     items = Item.query.filter(Item.type.in_([2])).all()
     return render_template("list_items.html", page_title='Charms', items=items)
 
@@ -183,6 +217,7 @@ def uniforms():
 
 @app.route('/skins')
 def skins():
+    flash("Support for universal skins will be added in the future")
     items = Item.query.filter(Item.type.in_([7])).all()
     return render_template("list_items.html", page_title='Skins', items=items)
 
@@ -213,8 +248,14 @@ def operator(operator):
     for i in op_items:
         opitems_temp.append(i.item_id)
     items = Item.query.filter(Item.id.in_(opitems_temp)).all()
-    return render_template("operator.html", page_title=operator, item=item,
-                           org=org, items=items)
+
+    in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory_check is not None:
+        in_inventory = True
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+    else:
+        in_inventory = False
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
 
 
 @app.route('/organisation/<organisation>')
@@ -234,6 +275,13 @@ def organisation(organisation):
 def charm(charm):
     charm = charm.replace("%20", " ")
     item = Item.query.filter_by(name=charm).first_or_404()
+    in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory_check is not None:
+        in_inventory = True
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+    else:
+        in_inventory = False
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
     return render_template("charm.html", page_title=charm, item=item)
 
 
@@ -241,6 +289,13 @@ def charm(charm):
 def headgear(headgear):
     headgear = headgear.replace("%20", " ")
     item = Item.query.filter_by(name=headgear).first_or_404()
+    in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory_check is not None:
+        in_inventory = True
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+    else:
+        in_inventory = False
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
     return render_template("headgear.html", page_title=headgear, item=item)
 
 
@@ -248,6 +303,13 @@ def headgear(headgear):
 def uniform(uniform):
     uniform = uniform.replace("%20", " ")
     item = Item.query.filter_by(name=uniform).first_or_404()
+    in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory_check is not None:
+        in_inventory = True
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+    else:
+        in_inventory = False
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
     return render_template("uniform.html", page_title=uniform, item=item)
 
 
@@ -255,6 +317,13 @@ def uniform(uniform):
 def skin(skin):
     skin = skin.replace("%20", " ")
     item = Item.query.filter_by(name=skin).first_or_404()
+    in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
+    if in_inventory_check is not None:
+        in_inventory = True
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+    else:
+        in_inventory = False
+        return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
     return render_template("skin.html", page_title=skin, item=item)
 
 

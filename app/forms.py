@@ -91,10 +91,10 @@ class ChangeProfileInformationForm(FlaskForm):
 
 
 class UploadNewItemForm(FlaskForm):
-    operator_query = Item.query.filter(Item.type.in_([5])).all()
-    operators = []
-    for op in operator_query:
-        operators.append(op.name)
+    #operator_query = Item.query.filter(Item.type.in_([5])).all()
+    #operators = []
+    #for op in operator_query:
+    #    operators.append(op.name)
 
 
     name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "Item Name"})

@@ -93,6 +93,24 @@ class User(db.Model, UserMixin):
         return User.query.get(id)
 
 
+class UserItem(db.Model):
+    __tablename__ = 'user_item'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.ForeignKey(User.id))
+    item_id = db.Column(db.ForeignKey(Item.id))
+    item_type = db.Column(db.ForeignKey(ItemType.id))
+
+    def set_user_id(self, user_id):
+        self.user_id = user_id
+
+    def set_item_id(self, item_id):
+        self.item_id = item_id
+
+    def set_item_type(self, item_type):
+        self.item_type = item_type
+
+
 class UserUpload(db.Model):
     __tablename__ = 'user_upload'
 
@@ -102,12 +120,6 @@ class UserUpload(db.Model):
     item_name = db.Column(db.Text(64), nullable=False)
     small_image = db.Column(db.Text(), nullable=False)
     large_image = db.Column(db.Text(), nullable=False)
-
-t_user_item = db.Table(
-    'user_item',
-    db.Column('user_id', db.ForeignKey('user.id')),
-    db.Column('item_id', db.ForeignKey('item.id'))
-)
 
 
 @login.user_loader

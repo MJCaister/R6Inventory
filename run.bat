@@ -5,7 +5,7 @@ echo Installing required packages
 @cd C:\Python36\Scripts\
 @pip install -r S:\16086\R6Inventory\requirements.txt
 echo Finished installing any required packages
-@python S:\16086\R6Inventory\r6inventory.py
+@python r6inventory.py
 @cd C:\Python36\
 @python S:\16086\R6Inventory\r6inventory.py
 echo Program crashed/quit
