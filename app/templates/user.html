@@ -8,8 +8,9 @@
         <td><h1>User: {{ user.username }}</h1></td>
     </tr>
 </table>
+{% if current_user.username == user.username %}
 <a href="{{ url_for('user_settings', username=user.username)}}" style='float: right;'>Change Profile Information</a>
-
+{% endif %}
 <div id="item_list">
     {% for item in items %}
     <figure class="item">
