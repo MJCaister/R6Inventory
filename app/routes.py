@@ -266,11 +266,3 @@ def page_not_found(e):
 @app.errorhandler(403)
 def forbidden(e):
     return render_template('403.html'), 403
-<<<<<<< HEAD
-
-
-@app.errorhandler(403)
-def forbidden(e):
-    return render_template('403.html', 403)
-=======
->>>>>>> c812d5f99301d9c0c4367cb3f9fd304baefc618f
