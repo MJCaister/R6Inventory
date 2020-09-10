@@ -10,9 +10,9 @@
 <p>Please <a href="{{url_for('login')}}">Log in</a> to add items to your inventory</p>
 {% else %}
 {% if in_inventory == false %}
-<button onclick="location.href='{{ url_for('add_to_inventory', item_name=item.name) }}'" type="button">Add to Inventory</button>
+<button id="submit" onclick="location.href='{{ url_for('add_to_inventory', item_name=item.name) }}'" type="button">Add to Inventory</button>
 {% else %}
-<button onclick="location.href='{{ url_for('add_to_inventory', item_name=item.name) }}'" type="button">Remove from Inventory</button>
+<button id="submit" onclick="location.href='{{ url_for('add_to_inventory', item_name=item.name) }}'" type="button">Remove from Inventory</button>
 {% endif %}
 {% endif %}
 {% endblock %}

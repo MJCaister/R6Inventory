@@ -62,6 +62,7 @@ class ResetPasswordForm(FlaskForm):
 
 
 class ChangeProfileInformationForm(FlaskForm):
+    # Uses optional validator so the user can change either username or email or both
     username = StringField('New Username', validators=[Optional(), AlphaNumeric(message="Alphanumeric only"),
                            Length(max=16)],
                            render_kw={"placeholder": "New username"})
