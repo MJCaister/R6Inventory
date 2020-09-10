@@ -60,12 +60,16 @@ class User(db.Model, UserMixin):
     password = db.Column(db.Text(256), nullable=False)
     email = db.Column(db.Text)
 
+
+    # Makes user class look nicer when printed in debug
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+    # Sets the password for the user using the werkzeug password_hash function
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
+    # Checks the stored hash against the user entered password and returns True/False
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -75,14 +79,18 @@ class User(db.Model, UserMixin):
     def set_email(self, email):
         self.email = email
 
+    # Generates a custom profile image for users based on their email address
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s{}'.format(
                                                                   digest, size)
 
-    def get_reset_password_token(self, expires_in=600):
+    # Generates a token for password resets using jwt, encodes the time when it expires, the user id, and the secret key
+    # 300 seconds is a reasonable time for the token to expire as it shouldnt take longer than that for the user to sign into their email and click the link
+    def get_reset_password_token(self, expires_in=300):
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf8')
 
+    # Verifies if the token is correct by decoding the token, if it cannot it will return nothing
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -122,6 +130,7 @@ class UserUpload(db.Model):
     large_image = db.Column(db.Text(), nullable=False)
 
 
+# Parses the user id to flask-login
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

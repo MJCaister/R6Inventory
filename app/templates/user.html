@@ -11,6 +11,19 @@
 {% if current_user.username == user.username %}
 <a href="{{ url_for('user_settings', username=user.username)}}" style='float: right;'>Change Profile Information</a>
 {% endif %}
+
+<h2>Operators</h2>
+<div id="item_list">
+    {% for op in operators %}
+    <figure class="item">
+    <a href="/{{ op.item_type.name }}/{{ op.name }}">
+        <img class="small_image" src="{{ op.small_image }}">
+        <figcaption class="item_caption">{{ op.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
+<h2>Skins</h2>
 <div id="item_list">
     {% for item in items %}
     <figure class="item">
@@ -21,5 +34,37 @@
     </figure>
     {% endfor %}
 </div>
-
+<h2>Headgear</h2>
+<div id="item_list">
+    {% for item in items %}
+    <figure class="item">
+    <a href="/{{ item.item_type.name }}/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">
+        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
+<h2>Uniforms</h2>
+<div id="item_list">
+    {% for item in items %}
+    <figure class="item">
+    <a href="/{{ item.item_type.name }}/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">
+        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
+<h2>Charms</h2>
+<div id="item_list">
+    {% for item in items %}
+    <figure class="item">
+    <a href="/{{ item.item_type.name }}/{{ item.name }}">
+        <img class="small_image" src="{{ item.small_image }}">
+        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
 {% endblock %}

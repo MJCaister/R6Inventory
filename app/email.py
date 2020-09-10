@@ -4,15 +4,18 @@ from flask import render_template
 from app import mail, app
 
 
+# Uses threading to send emails without holding up the server/user
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
 
+# Sends email to the requested email address using the templated html/txt files for the respective email
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
+    # Starts new thread
     Thread(target=send_async_email, args=(app, msg)).start()
 
 
@@ -28,6 +31,7 @@ def send_password_reset_email(user):
 
 
 def send_profile_information_changed_email(user, new_email=None):
+    # Checks for if email has been changed
     if new_email is not None:
         print('Sending new email to {}, {}'.format(new_email, user.email))
         send_email('R6Inventory | Account details changed',
@@ -46,4 +50,3 @@ def send_profile_information_changed_email(user, new_email=None):
                                   user=user),
         html_body=render_template('email/details_changed.html',
                                   user=user))
-    

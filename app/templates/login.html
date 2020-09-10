@@ -5,7 +5,9 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
+            {# Sets the size of the form input to 32 characters #}
             {{ form.username(size=32) }}
+            {# checks for validation errors returned by the form and displays them to the user #}
             {% for error in form.username.errors %}<br>
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}

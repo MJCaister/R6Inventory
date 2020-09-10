@@ -1,5 +1,6 @@
 import os
 
+# Gets the absolute path of the flaskapps location
 basedir = os.path.abspath((os.path.dirname(__file__)))
 
 

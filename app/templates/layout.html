@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+{# Sets the DOCTYPE to html and sets the document locale to english #}
 <html lang="en">
 <head>
+    {# Links the stylesheet and font to the webpages #}
     <meta charset="UTF-8">
-    <!--<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="5983b430-f834-4160-a805-98da1ac95dfb" data-blockingmode="auto" type="text/javascript"></script>-->
     <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <title>R6 Inventory - {{ page_title }}</title>
 </head>
 <body>
+    {# includes the section templates for the webpage #}
     {% include 'header.html' %}
     {% include 'nav.html' %}
     
+    {# gets all flashed messages and displays them to the user #}
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div id='flash'>

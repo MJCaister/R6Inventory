@@ -33,6 +33,7 @@ class RegistrationForm(FlaskForm):
                               render_kw={"placeholder": "Confirm password"})
     submit = SubmitField('Register')
 
+    # Queries database to see if user already exists otherwise raises validation error
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
@@ -89,12 +90,8 @@ class ChangeProfileInformationForm(FlaskForm):
             raise ValidationError(
                 'An account with this email address in already in use')
 
-
+# Planned future function for user uploading items
 class UploadNewItemForm(FlaskForm):
-    #operator_query = Item.query.filter(Item.type.in_([5])).all()
-    #operators = []
-    #for op in operator_query:
-    #    operators.append(op.name)
 
 
     name = StringField('Item Name', validators=[DataRequired()], render_kw={"placeholder": "Item Name"})
