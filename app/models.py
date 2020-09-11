@@ -119,6 +119,7 @@ class UserItem(db.Model):
         self.item_type = item_type
 
 
+# Future addition to website
 class UserUpload(db.Model):
     __tablename__ = 'user_upload'
 

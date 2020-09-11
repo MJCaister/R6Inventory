@@ -16,12 +16,6 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p >
-            {{ form.email_confirm(size=40) }}
-            {% for error in form.email_confirm.errors %}<br>
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
         <p>
             {{ form.password(size=40) }}
             {% for error in form.password.errors %}<br>

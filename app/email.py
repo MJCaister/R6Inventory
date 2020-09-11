@@ -12,7 +12,8 @@ def send_async_email(app, msg):
 
 # Sends email to the requested email address using the templated html/txt files for the respective email
 def send_email(subject, sender, recipients, text_body, html_body):
-    msg = Message(subject, sender=sender, recipients=recipients)
+    # Sends message as BCC so that multiple recipients cannot see each others email addresses
+    msg = Message(subject, sender=sender, bcc=recipients)
     msg.body = text_body
     msg.html = html_body
     # Starts new thread

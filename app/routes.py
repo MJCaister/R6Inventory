@@ -26,12 +26,13 @@ def home():
 def login():
     # Checks if user is logged in and redirects them to the url endpoint home
     if current_user.is_authenticated:
+        flash("User {} already logged in".format(current_user.username))
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         # Queries the User table for the entered username
         user = User.query.filter_by(username=form.username.data).first()
-        # If the username exists and the entered password is incorrect
+        # If the username does not exist or the entered password is incorrect
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -54,7 +55,7 @@ def logout():
         logout_user()
     # AttributeError is called by flask-login when it tries to logout an anonymous user
     except AttributeError:
-        flash("User already logged out")
+        flash("Not logged in")
     return redirect(url_for('home'))
 
 
@@ -67,10 +68,31 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-        flash('Check your email for the instructions to reset your password')
+        flash('If the account exists you will receive an email for the instructions on how to reset your password')
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
                            page_title='Password Reset', form=form)
+
+
+# Route takes in the token as a variable
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    # Checks if the token is valid
+    user = User.verify_reset_password_token(token)
+    if not user:
+        flash("Invalid or expired token")
+        return redirect(url_for('login'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        # Updates the User class in session using a dictionary
+        db.session.query(User).filter_by(id=user.id).update({User.password: user.password})
+        db.session.commit()
+        flash('Your password has been reset')
+        return redirect(url_for('login'))
+    return render_template("reset_password.html", form=form, page_title='Reset password')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -87,27 +109,6 @@ def register():
         flash("Registered new user '{}'".format(form.username.data))
         return redirect(url_for('login'))
     return render_template('register.html', page_title='Register', form=form)
-
-
-# Route takes in the token as a variable
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    # Checks if the token is valid
-    user = User.verify_reset_password_token(token)
-    if not user:
-        flash("Invalid or expired token")
-        return redirect(url_for('home'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        # Updates the User class in session using a dictionary
-        db.session.query(User).filter_by(id=user.id).update({User.password: user.password})
-        db.session.commit()
-        flash('Your password has been reset')
-        return redirect(url_for('login'))
-    return render_template("reset_password.html", form=form, page_title='Reset password')
 
 
 @app.route('/user/<username>')
@@ -193,8 +194,12 @@ def new_item():
 @app.route('/add_to_inventory/<item_name>')
 @login_required
 def add_to_inventory(item_name):
-    item = Item.query.filter_by(name=item_name).first()
+    item_types_allowed = [2, 3, 4, 5, 7]
+    item = Item.query.filter_by(name=item_name).first_or_404()
     item_type = ItemType.query.filter_by(id=item.type).first()
+    if item.type not in item_types_allowed:
+        flash("Invalid item")
+        return redirect("/{}/{}".format(item_type.name, item.name))
     # Checks if item already in the users inventory
     in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
     if in_inventory is None:
@@ -213,8 +218,12 @@ def add_to_inventory(item_name):
 @app.route('/remove_from_inventory/<item_name>')
 @login_required
 def remove_from_inventory(item_name):
-    item = Item.query.filter_by(name=item_name).first()
+    item_types_allowed = [2, 3, 4, 5, 7]
+    item = Item.query.filter_by(name=item_name).first_or_404()
     item_type = ItemType.query.filter_by(id=item.type).first()
+    if item.type not in item_types_allowed:
+        flash("Invalid item")
+        return redirect("/{}/{}".format(item_type.name, item.name))
     in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
     if in_inventory is not None:
         db.session.query(UserItem).filter_by(user_id=current_user.id, item_id=item.id).delete()
@@ -249,7 +258,6 @@ def organisations():
 
 @app.route('/charms')
 def charms():
-    flash("Support for charms will be added in the future")
     items = Item.query.filter(Item.type.in_([2])).all()
     return render_template("list_items.html", page_title='Charms', items=items)
 
@@ -351,7 +359,7 @@ def charm(charm):
 def headgear(headgear):
     headgear = headgear.replace("%20", " ")
     item = Item.query.filter_by(name=headgear).first_or_404()
-    
+
     if current_user.is_authenticated:
         in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
         if in_inventory_check is not None:

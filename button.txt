@@ -1,1 +1,0 @@
-<button onclick="location.href='{{ url_for('favourite', id=[id]) }}'" type="button"> Text </button>

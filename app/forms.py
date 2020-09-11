@@ -7,6 +7,7 @@ from app.models import User, ItemType, Item
 
 
 class LoginForm(FlaskForm):
+    # Render_kw sets the forms placeholder text using the dictionary key for placeholder
     username = StringField('Username', validators=[DataRequired()],
                            render_kw={"placeholder": "Username"})
     password = PasswordField('Password', validators=[DataRequired()],
@@ -17,18 +18,17 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),
-                           AlphaNumeric(message="Alphanumeric only"),
-                           Length(max=16)],
+                           AlphaNumeric(message="Letters & numbers only"),
+                           Length(max=24, message="Usernames are limited to 24 characters")],
                            render_kw={"placeholder": "Username"})
     email = StringField('Email', validators=[DataRequired(),
                         Email()],
                         render_kw={"placeholder":
                                    "Email: example@example.com"})
     password = PasswordField('Password', validators=[DataRequired(),
-                             Length(min=8),
-                             AlphaNumeric(message="Alphanumeric only")],
+                             Length(min=8, message="Password must be at least 8 characters long")],
                              render_kw={"placeholder": "Password"})
-    password2 = PasswordField('Repeat Password', validators=[DataRequired(""),
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(),
                               EqualTo('password', message="Passwords must match")],
                               render_kw={"placeholder": "Confirm password"})
     submit = SubmitField('Register')
@@ -55,25 +55,20 @@ class ResetPasswordRequestForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(),
-                             Length(min=8)])
+                             Length(min=8, message="Password must be at least 8 characters long")])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repeat Password', validators=[DataRequired(), EqualTo('password', message="Passwords must match")])
     submit = SubmitField('Request Password Reset')
 
 
 class ChangeProfileInformationForm(FlaskForm):
     # Uses optional validator so the user can change either username or email or both
     username = StringField('New Username', validators=[Optional(), AlphaNumeric(message="Alphanumeric only"),
-                           Length(max=16)],
+                           Length(max=24)],
                            render_kw={"placeholder": "New username"})
     email = StringField('New Email', validators=[Optional(), Email()],
                         render_kw={"placeholder":
                                    "New email: example@example.com"})
-    email_confirm = StringField('Please enter your new email again', validators=[Optional(),
-                                                                                 EqualTo('email',
-                                                                                         "Email addresses do not match")
-                                                                                 ],
-                                render_kw={"placeholder": "Confirm your new email"})
     password = PasswordField("Please enter your password to confirm these changes",
                              validators=[DataRequired()],
                              render_kw={"placeholder": "Enter your password to confirm profile changes"})

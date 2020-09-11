@@ -90,6 +90,12 @@ input {
     border-radius: 5%;
 }
 
+.large_image {
+    border-radius: 5%;
+    width: 20%;
+    height: 20%;
+}
+
 #item_list {
     display: inline-list-item;
 }

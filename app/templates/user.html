@@ -23,46 +23,47 @@
     </figure>
     {% endfor %}
 </div>
-<h2>Skins</h2>
-<div id="item_list">
-    {% for item in items %}
-    <figure class="item">
-    <a href="/{{ item.item_type.name }}/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
-        <figcaption class="item_caption">{{ item.name }}</figcaption>
-    </a>
-    </figure>
-    {% endfor %}
-</div>
 <h2>Headgear</h2>
 <div id="item_list">
-    {% for item in items %}
+    {% for headgear_ in headgear %}
     <figure class="item">
-    <a href="/{{ item.item_type.name }}/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
-        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    <a href="/{{ headgear_.item_type.name }}/{{ headgear_.name }}">
+        <img class="small_image" src="{{ headgear_.small_image }}">
+        <figcaption class="item_caption">{{ headgear_.name }}</figcaption>
     </a>
     </figure>
     {% endfor %}
 </div>
 <h2>Uniforms</h2>
 <div id="item_list">
-    {% for item in items %}
+    {% for uniform in uniforms %}
     <figure class="item">
-    <a href="/{{ item.item_type.name }}/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
-        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    <a href="/{{ uniform.item_type.name }}/{{ uniform.name }}">
+        <img class="small_image" src="{{ uniform.small_image }}">
+        <figcaption class="item_caption">{{ uniform.name }}</figcaption>
     </a>
     </figure>
     {% endfor %}
 </div>
 <h2>Charms</h2>
 <div id="item_list">
-    {% for item in items %}
+    {% for charm in charms %}
     <figure class="item">
-    <a href="/{{ item.item_type.name }}/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
-        <figcaption class="item_caption">{{ item.name }}</figcaption>
+    <a href="/{{ charm.item_type.name }}/{{ charm.name }}">
+        <img class="small_image" src="{{ charm.small_image }}">
+        <figcaption class="item_caption">{{ charm.name }}</figcaption>
+    </a>
+    </figure>
+    {% endfor %}
+</div>
+<h2>Skins</h2>
+<p>Skins coming in the future!</p>
+<div id="item_list">
+    {% for skin in skins %}
+    <figure class="item">
+    <a href="/{{ skin.item_type.name }}/{{ skin.name }}">
+        <img class="small_image" src="{{ skin.small_image }}">
+        <figcaption class="item_caption">{{ skin.name }}</figcaption>
     </a>
     </figure>
     {% endfor %}
