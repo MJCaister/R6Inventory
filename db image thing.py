@@ -11,8 +11,11 @@ results = cur.fetchall()
 for item in results:
     try:
         print(item)
-        cur.execute("UPDATE item SET small_image = {} WHERE id = {}".format(item[3].replace('/static/images/item/', ''), item[0]))
-        cur.execute("UPDATE item SET large_image = {} WHERE id = {}".format(item[4].replace('/static/images/item/', ''), item[0]))
-    except NoneType:
+        cur.execute("UPDATE item SET small_image = '{}' WHERE id = {}".format(item[3].replace('/static/images/item/', ''), item[0]))    
+    except AttributeError:
+        continue
+    try:
+        cur.execute("UPDATE item SET large_image = '{}' WHERE id = {}".format(item[4].replace('/static/images/item/', ''), item[0]))
+    except AttributeError:
         continue
 conn.commit()
