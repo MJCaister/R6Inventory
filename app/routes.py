@@ -17,11 +17,13 @@ from app.models import Item, OperatorOrg, User, OperatorItem, UserItem, ItemType
 # weapon = Item.query.filter(Item.type.in_([8])).all()
 
 
+# Home landing page
 @app.route('/')
 def home():
     return render_template('home.html', page_title='Home')
 
 
+# Allows user to login if anonymous
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Checks if user is logged in and redirects them to the url endpoint home
@@ -48,6 +50,7 @@ def login():
     return render_template('login.html', page_title='Log In', form=form)
 
 
+# Logs out user if signed in
 @app.route('/logout')
 def logout():
     try:
@@ -59,6 +62,7 @@ def logout():
     return redirect(url_for('home'))
 
 
+#
 @app.route('/reset_password_request', methods=["GET", "POST"])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -95,6 +99,7 @@ def reset_password(token):
     return render_template("reset_password.html", form=form, page_title='Reset password')
 
 
+# Lets user register a new account if anonymous
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -111,6 +116,7 @@ def register():
     return render_template('register.html', page_title='Register', form=form)
 
 
+# Shows the requeted users profile page
 @app.route('/user/<username>')
 @login_required
 def user(username):
@@ -150,9 +156,11 @@ def user(username):
         charms_temp.append(charm.item_id)
     charms = Item.query.filter(Item.id.in_(charms_temp)).all()
 
-    return render_template('user.html', user=user, page_title=username, operators=operators, skins=skins, headgear=headgear, uniforms=uniforms, charms=charms)
+    return render_template('user.html', user=user, page_title=username, operators=operators, skins=skins,
+                           headgear=headgear, uniforms=uniforms, charms=charms)
 
 
+# Shows the users settings page if the authenticated user is the same as the requested one
 @app.route('/user/<username>/settings', methods=["GET", "POST"])
 @login_required
 def user_settings(username):
@@ -181,6 +189,7 @@ def user_settings(username):
     return render_template('user_settings.html', form=form, page_title=username + "'s settings")
 
 
+# New Item route
 @app.route('/new_item', methods=['POST'])
 @login_required
 def new_item():
@@ -191,6 +200,7 @@ def new_item():
     return render_template("new_item.html", form=form, page_title='New Item')
 
 
+# Lets authenticated user add items to inventory if they are the correct type
 @app.route('/add_to_inventory/<item_name>')
 @login_required
 def add_to_inventory(item_name):
@@ -215,6 +225,7 @@ def add_to_inventory(item_name):
         return redirect("/{}/{}".format(item_type.name, item.name))
 
 
+# Lets authenticated user remove items to inventory if they are the correct type
 @app.route('/remove_from_inventory/<item_name>')
 @login_required
 def remove_from_inventory(item_name):
@@ -235,6 +246,7 @@ def remove_from_inventory(item_name):
         return redirect("/{}/{}".format(item_type.name, item.name))
 
 
+# Returns list of weapons
 @app.route('/weapons')
 def weapons():
     items = Item.query.filter(Item.type.in_([8])).all()
@@ -242,6 +254,7 @@ def weapons():
                            items=items)
 
 
+# Returns list of operators
 @app.route('/operators')
 def operators():
     items = Item.query.filter(Item.type.in_([5])).all()
@@ -249,6 +262,7 @@ def operators():
                            items=items)
 
 
+# Returns list of organisations
 @app.route('/organisations')
 def organisations():
     items = Item.query.filter(Item.type.in_([6])).all()
@@ -256,12 +270,14 @@ def organisations():
                            items=items)
 
 
+# Returns list of charms
 @app.route('/charms')
 def charms():
     items = Item.query.filter(Item.type.in_([2])).all()
     return render_template("list_items.html", page_title='Charms', items=items)
 
 
+# Returns list of headgear
 @app.route('/headgears')
 def headgears():
     items = Item.query.filter(Item.type.in_([3])).all()
@@ -269,6 +285,7 @@ def headgears():
                            items=items)
 
 
+# Returns list of uniforms
 @app.route('/uniforms')
 def uniforms():
     items = Item.query.filter(Item.type.in_([4])).all()
@@ -276,6 +293,7 @@ def uniforms():
                            items=items)
 
 
+# Returns list of skins
 @app.route('/skins')
 def skins():
     flash("Support for universal skins will be added in the future")
@@ -283,6 +301,7 @@ def skins():
     return render_template("list_items.html", page_title='Skins', items=items)
 
 
+# Returns weapon information if exists
 @app.route('/weapon/<weapon>')
 def weapon(weapon):
     # Replaces literal unicode spaces with spaces to be queried
@@ -297,6 +316,8 @@ def weapon(weapon):
     return render_template("weapon.html", page_title=weapon, item=item, ops=ops)
 
 
+
+# Returns operator information if exists
 @app.route('/operator/<operator>')
 def operator(operator):
     operator = operator.replace("%20", " ")
@@ -319,13 +340,16 @@ def operator(operator):
         in_inventory_check = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
         if in_inventory_check is not None:
             in_inventory = True
-            return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+            return render_template("operator.html", page_title=operator, item=item,
+                                   org=org, items=items, in_inventory=in_inventory)
         else:
             in_inventory = False
-            return render_template("operator.html", page_title=operator, item=item, org=org, items=items, in_inventory=in_inventory)
+            return render_template("operator.html", page_title=operator, item=item,
+                                   org=org, items=items, in_inventory=in_inventory)
     return render_template("operator.html", page_title=operator, item=item, org=org, items=items)
 
 
+# Returns organisation information if exists
 @app.route('/organisation/<organisation>')
 def organisation(organisation):
     organisation = organisation.replace("%20", " ")
@@ -339,6 +363,7 @@ def organisation(organisation):
                            item=item, ops=ops)
 
 
+# Returns charm information if exists
 @app.route('/charm/<charm>')
 def charm(charm):
     charm = charm.replace("%20", " ")
@@ -355,6 +380,7 @@ def charm(charm):
     return render_template("charm.html", page_title=charm, item=item)
 
 
+# Returns headgear information if exists
 @app.route('/headgear/<headgear>')
 def headgear(headgear):
     headgear = headgear.replace("%20", " ")
@@ -371,6 +397,7 @@ def headgear(headgear):
     return render_template("headgear.html", page_title=headgear, item=item)
 
 
+# Returns uniform information if exists
 @app.route('/uniform/<uniform>')
 def uniform(uniform):
     uniform = uniform.replace("%20", " ")
@@ -387,6 +414,7 @@ def uniform(uniform):
     return render_template("uniform.html", page_title=uniform, item=item)
 
 
+# Returns skin information if exists
 @app.route('/skin/<skin>')
 def skin(skin):
     skin = skin.replace("%20", " ")

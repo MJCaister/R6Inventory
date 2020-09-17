@@ -6,7 +6,7 @@
     {% for item in items %}
     <figure class="item">
     <a href="/{{ item.item_type.name }}/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
+        <img class="small_image" src="/static/images/item/{{ item.small_image }}">
         <figcaption class="item_caption">{{ item.name }}</figcaption>
     </a>
     </figure>

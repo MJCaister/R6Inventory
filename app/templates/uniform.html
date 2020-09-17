@@ -3,8 +3,8 @@
 {% block content %}
 <div id="item">
     <h3>{{ item.name }}</h3>
-    <img class="small_image" src="{{ item.small_image }}">
-    <img class="large_image" src="{{ item.large_image }}">
+    <img class="small_image" src="/static/images/item/{{ item.small_image }}">
+    <img class="large_image" src="/static/images/item/{{ item.large_image }}">
 </div>
 {% if current_user.is_anonymous %}
 <p>Please <a href="{{url_for('login')}}">Log in</a> to add items to your inventory</p>

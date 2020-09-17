@@ -3,8 +3,8 @@
 <div id="item">
     <h2>{{ item.name }}</h2>
     {# gets the image path from the queried data #}
-    <img class="small_image" src="{{ item.small_image }}">
-    <img class="large_image" src="{{ item.large_image }}" alt="More images coming soon!">
+    <img class="small_image" src="/static/images/item/{{ item.small_image }}">
+    <img class="large_image" src="/static/images/item/{{ item.large_image }}" alt="More images coming soon!">
 </div>
 {% if current_user.is_anonymous %}
 <p>Please <a href="{{url_for('login')}}">Log in</a> to add items to your inventory</p>
@@ -19,7 +19,7 @@
     <p><b>Organisation:</b>
     <figure class="item">
     <a href="/organisation/{{ org.name }}">
-        <img class="small_image" src="{{ org.small_image }}">
+        <img class="small_image" src="/static/images/item/{{ org.small_image }}">
         <figcaption class="item_caption">{{ org.name }}</figcaption>
     </a>
     </figure>
@@ -31,7 +31,7 @@
     {% if item.type == 8 %}
     <figure class="item">
     <a href="/weapon/{{ item.name }}">
-        <img class="small_image" src="{{ item.small_image }}">
+        <img class="small_image" src="/static/images/item/{{ item.small_image }}">
         <figcaption class="item_caption">{{ item.name }}</figcaption>
     </a>
     </figure>
