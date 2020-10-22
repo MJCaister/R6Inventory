@@ -28,7 +28,7 @@ def home():
 def login():
     # Checks if user is logged in and redirects them to the url endpoint home
     if current_user.is_authenticated:
-        flash("User {} already logged in".format(current_user.username))
+        flash("User {} already logged in".format(current_user.username), 'error')
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -36,7 +36,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         # If the username does not exist or the entered password is incorrect
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'error')
             return redirect(url_for('login'))
         # Calls the flask-login function to log the user in
         login_user(user, remember=form.remember_me.data)
@@ -44,7 +44,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home')
-        flash("Logged in user {}".format(form.username.data))
+        flash("Logged in user {}".format(form.username.data), 'notif')
         return redirect(next_page)
     # Parses page title to the render templater along with the form
     return render_template('login.html', page_title='Log In', form=form)
@@ -54,11 +54,11 @@ def login():
 @app.route('/logout')
 def logout():
     try:
-        flash("Successfully logged out user {}".format(current_user.username))
+        flash("Successfully logged out user {}".format(current_user.username), 'notif')
         logout_user()
     # AttributeError is called by flask-login when it tries to logout an anonymous user
     except AttributeError:
-        flash("Not logged in")
+        flash("Not logged in", 'notif')
     return redirect(url_for('home'))
 
 
@@ -72,7 +72,7 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-        flash('If the account exists you will receive an email for the instructions on how to reset your password')
+        flash('If the account exists you will receive an email for the instructions on how to reset your password', 'notif')
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
                            page_title='Password Reset', form=form)
@@ -86,7 +86,7 @@ def reset_password(token):
     # Checks if the token is valid
     user = User.verify_reset_password_token(token)
     if not user:
-        flash("Invalid or expired token")
+        flash("Invalid or expired token", 'error')
         return redirect(url_for('login'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -94,7 +94,7 @@ def reset_password(token):
         # Updates the User class in session using a dictionary
         db.session.query(User).filter_by(id=user.id).update({User.password: user.password})
         db.session.commit()
-        flash('Your password has been reset')
+        flash('Your password has been reset', 'notif')
         return redirect(url_for('login'))
     return render_template("reset_password.html", form=form, page_title='Reset password')
 
@@ -111,7 +111,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash("Registered new user '{}'".format(form.username.data))
+        flash("Registered new user '{}'".format(form.username.data), 'notif')
         return redirect(url_for('login'))
     return render_template('register.html', page_title='Register', form=form)
 
@@ -181,10 +181,10 @@ def user_settings(username):
             db.session.query(User).filter_by(id=user.id).update({User.email: user.email})
             send_profile_information_changed_email(user, new_email)
         if form.username.data == '' and form.email.data == '':
-            flash("No data was entered")
+            flash("No data was entered", 'error')
             return redirect(url_for('user_settings', username=username))
         db.session.commit()
-        flash("Profile information has been changed")
+        flash("Profile information has been changed", 'notif')
         return redirect(url_for('home'))
     return render_template('user_settings.html', form=form, page_title=username + "'s settings")
 
@@ -208,7 +208,7 @@ def add_to_inventory(item_name):
     item = Item.query.filter_by(name=item_name).first_or_404()
     item_type = ItemType.query.filter_by(id=item.type).first()
     if item.type not in item_types_allowed:
-        flash("Invalid item")
+        flash("Invalid item", 'error')
         return redirect("/{}/{}".format(item_type.name, item.name))
     # Checks if item already in the users inventory
     in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
@@ -217,11 +217,11 @@ def add_to_inventory(item_name):
         item_to_add = UserItem(user_id=current_user.id, item_id=item.id, item_type=item.type)
         db.session.add(item_to_add)
         db.session.commit()
-        flash("Successfully added new item to your inventory")
+        flash("Successfully added new item to your inventory", 'notif')
         # Returns to the items page for 'seamless' adding of item
         return redirect("/{}/{}".format(item_type.name, item.name))
     else:
-        flash("Item is already in your inventory")
+        flash("Item is already in your inventory", 'error')
         return redirect("/{}/{}".format(item_type.name, item.name))
 
 
@@ -233,16 +233,16 @@ def remove_from_inventory(item_name):
     item = Item.query.filter_by(name=item_name).first_or_404()
     item_type = ItemType.query.filter_by(id=item.type).first()
     if item.type not in item_types_allowed:
-        flash("Invalid item")
+        flash("Invalid item", 'error')
         return redirect("/{}/{}".format(item_type.name, item.name))
     in_inventory = UserItem.query.filter_by(user_id=current_user.id, item_id=item.id).first()
     if in_inventory is not None:
         db.session.query(UserItem).filter_by(user_id=current_user.id, item_id=item.id).delete()
         db.session.commit()
-        flash("Successfully removed item from your inventory")
+        flash("Successfully removed item from your inventory", 'notif')
         return redirect("/{}/{}".format(item_type.name, item.name))
     else:
-        flash("Item is not in your inventory")
+        flash("Item is not in your inventory", 'error')
         return redirect("/{}/{}".format(item_type.name, item.name))
 
 
@@ -296,7 +296,7 @@ def uniforms():
 # Returns list of skins
 @app.route('/skins')
 def skins():
-    flash("Support for universal skins will be added in the future")
+    flash("Support for universal skins will be added in the future", 'notif')
     items = Item.query.filter(Item.type.in_([7])).all()
     return render_template("list_items.html", page_title='Skins', items=items)
 
